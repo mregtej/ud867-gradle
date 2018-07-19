@@ -67,3 +67,11 @@ task sweetCoffee {
         println "Mmmm, sweet! just how I like it."
     }
 }
+
+pour.dependsOn brew
+drink.dependsOn pour
+addSweetener.mustRunAfter pour
+drink.mustRunAfter addSweetener
+blackCoffee.dependsOn drink
+sweetCoffee.dependsOn addSweetener
+sweetCoffee.dependsOn drink

@@ -20,9 +20,15 @@ in the webOutputDir property via the command line).
 
 */
 
+ext {
+	extBaseName = 'web2'
+}
+
 task bundleWeb(type: Zip) {
-    baseName = 'web'
+    baseName = extBaseName
     destinationDir = file(webOutputDir)
 
     from 'src/web'
 }
+
+

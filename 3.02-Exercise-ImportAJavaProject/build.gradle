@@ -20,3 +20,7 @@ solution file into this one.
 */
 
 //apply from: "solution.gradle"
+
+task JokeTeller {
+    println "Van dos en una moto y se cae el del medio"
+}

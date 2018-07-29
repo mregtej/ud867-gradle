@@ -1,0 +1,6 @@
+<resources>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_joke">JokeActivity</string>
+
+    <string name="joke">That is a joke!!</string>
+</resources>

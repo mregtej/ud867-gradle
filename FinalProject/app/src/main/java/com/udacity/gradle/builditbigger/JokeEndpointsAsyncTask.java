@@ -1,29 +1,23 @@
 package com.udacity.gradle.builditbigger;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.AsyncTask;
-import android.util.Pair;
 
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.extensions.android.json.AndroidJsonFactory;
 import com.google.api.client.googleapis.services.AbstractGoogleClientRequest;
 import com.google.api.client.googleapis.services.GoogleClientRequestInitializer;
 import com.udacity.gradle.builditbigger.backend.myApi.MyApi;
-import com.udacity.mregtej.jokedisplay.JokeActivity;
-import com.udacity.mregtej.jokemaker.JokeMaker;
 
 import java.io.IOException;
 
-public class EndpointsAsyncTask extends AsyncTask<Context, Void, String>  {
-
-    public static String JOKE_KEY = "Joke-Key";
+public class JokeEndpointsAsyncTask extends AsyncTask<Void, Void, String>  {
 
     private static MyApi myApiService = null;
-    private Context context;
+    private JokeEndpointsAsyncTaskListener mListener = null;
 
     @Override
-    protected String doInBackground(Context... params) {
+    protected String doInBackground(Void... params) {
         if(myApiService == null) {  // Only do this once
             MyApi.Builder builder = new MyApi.Builder(AndroidHttp.newCompatibleTransport(),
                     new AndroidJsonFactory(), null)
@@ -41,8 +35,6 @@ public class EndpointsAsyncTask extends AsyncTask<Context, Void, String>  {
             myApiService = builder.build();
         }
 
-        context = params[0];
-
         try {
             return myApiService.makeAJoke().execute().getData();
         } catch (IOException e) {
@@ -50,10 +42,20 @@ public class EndpointsAsyncTask extends AsyncTask<Context, Void, String>  {
         }
     }
 
+    public JokeEndpointsAsyncTask setListener(JokeEndpointsAsyncTaskListener listener) {
+        this.mListener = listener;
+        return this;
+    }
+
+
     @Override
     protected void onPostExecute(String result) {
-        Intent intent = new Intent(context, JokeActivity.class);
-        intent.putExtra(JOKE_KEY, result);
-        context.startActivity(intent);
+        if(this.mListener != null) {
+            mListener.onComplete(result);
+        }
+    }
+
+    public static interface JokeEndpointsAsyncTaskListener {
+        public void onComplete(String result);
     }
 }

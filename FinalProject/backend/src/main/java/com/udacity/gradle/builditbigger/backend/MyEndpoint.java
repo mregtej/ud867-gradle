@@ -3,8 +3,9 @@ package com.udacity.gradle.builditbigger.backend;
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiNamespace;
+import com.google.api.server.spi.config.Named;
+import com.udacity.mregtej.jokemaker.JokeMaker;
 
-import javax.inject.Named;
 
 /** An endpoint class we are exposing */
 @Api(
@@ -25,6 +26,13 @@ public class MyEndpoint {
         response.setData("Hi, " + name);
 
         return response;
+    }
+
+    @ApiMethod(name = "makeAJoke")
+    public MyBean makeAJoke() {
+        MyBean joke = new MyBean();
+        joke.setData(JokeMaker.makeAJoke());
+        return joke;
     }
 
 }
